@@ -1,6 +1,17 @@
 import os
 import subprocess
 import shlex
+import json
+
+
+if not os.path.exists('config.json'):
+    config = {"chromedriver": "chromedriver"}
+    with open('config.json', 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
+
+else:
+    with open('config.json', 'r', encoding='utf-8') as f:
+        config = json.load(f)
 
 
 # https://github.com/shawnbutton/PythonHeadlessChrome/blob/master/driver_builder.py
@@ -27,7 +38,7 @@ if __name__ == '__main__':
 
     chrome_options.add_argument("--headless")
 
-    driver = Chrome(r'C:\Users\PVUSER\Downloads\chromedriver_win32\chromedriver.exe', options=chrome_options)
+    driver = Chrome(config['chromedriver'], options=chrome_options)
     driver.set_window_size(1300, 1800)
     driver.get('http://ruokalistat.leijonacatering.fi/#/05b0c494-f813-e511-892b-78e3b50298fc')
     enable_download_in_headless_chrome(driver, os.getcwd())

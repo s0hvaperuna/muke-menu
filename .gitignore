@@ -1,4 +1,5 @@
-menu_Varusmiesten ruokalista.pdf
-ruokalista.png
+*.png
+*.pdf
 .idea/
+config.json
 __pycache__/
