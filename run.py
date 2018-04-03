@@ -44,7 +44,7 @@ if __name__ == '__main__':
                 break
         else:
             break
-            
+
     driver.implicitly_wait(20)
     driver.execute_script("document.getElementsByClassName('btn btn-default ng-scope')[0].click()")
     driver.implicitly_wait(30)
