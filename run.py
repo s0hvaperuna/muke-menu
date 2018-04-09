@@ -1,8 +1,7 @@
-import os
-import subprocess
-import shlex
 import json
-
+import os
+import shlex
+import subprocess
 
 if not os.path.exists('config.json'):
     config = {"chromedriver": "chromedriver",
@@ -46,7 +45,7 @@ if __name__ == '__main__':
     driver.set_window_size(1300, 1800)
     driver.get('http://ruokalistat.leijonacatering.fi/#/05b0c494-f813-e511-892b-78e3b50298fc')
     enable_download_in_headless_chrome(driver, os.getcwd())
-    #driver.get_screenshot_as_png()
+    driver.get_screenshot_as_png()  # idk this increase the success rate of the script
     found = False
     i = 0
     while not found and i < 5:
@@ -54,9 +53,12 @@ if __name__ == '__main__':
         for name in menu_names:
             try:
                 driver.execute_script(f"$('a:contains(\"{name}\")')[0].click()")
+                print(f'clicking name {name}')
             except:
+                print('Not found')
                 pass
             else:
+                print('Found')
                 found = True
                 break
         i += 1
