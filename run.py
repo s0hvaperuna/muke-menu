@@ -33,10 +33,10 @@ if __name__ == '__main__':
 
     chrome_options = Options()
     prefs = {'download.default_directory': os.getcwd(),
-                 'download.prompt_for_download': False,
-                 'download.directory_upgrade': True,
-                 'safebrowsing.enabled': False,
-                 'safebrowsing.disable_download_protection': True}
+             'download.prompt_for_download': False,
+             'download.directory_upgrade': True,
+             'safebrowsing.enabled': False,
+             'safebrowsing.disable_download_protection': True}
 
     chrome_options.add_experimental_option('prefs', prefs)
 
@@ -53,8 +53,8 @@ if __name__ == '__main__':
         driver.implicitly_wait(3)
         for name in menu_names:
             try:
-                driver.execute_script(f"$('a:contains(\"{name}\")')[0].click()")
                 print(f'clicking name {name}')
+                driver.execute_script(f"$('a:contains(\"{name}\")')[0].click()")
             except:
                 traceback.print_exc()
                 print('Not found')
