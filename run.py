@@ -5,13 +5,17 @@ import json
 
 
 if not os.path.exists('config.json'):
-    config = {"chromedriver": "chromedriver"}
+    config = {"chromedriver": "chromedriver",
+              "token": None}
     with open('config.json', 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=4)
 
 else:
     with open('config.json', 'r', encoding='utf-8') as f:
         config = json.load(f)
+
+
+menu_names = ['Varusmiesten ruokalista', 'Varusmiesruokalista']
 
 
 # https://github.com/shawnbutton/PythonHeadlessChrome/blob/master/driver_builder.py
@@ -43,29 +47,38 @@ if __name__ == '__main__':
     driver.get('http://ruokalistat.leijonacatering.fi/#/05b0c494-f813-e511-892b-78e3b50298fc')
     enable_download_in_headless_chrome(driver, os.getcwd())
     #driver.get_screenshot_as_png()
-    while True:
-        try:
-            driver.execute_script("$('a:contains(\"Varusmiesten ruokalista\")')[0].click()")
-        except:
+    found = False
+    i = 0
+    while not found and i < 5:
+        driver.implicitly_wait(3)
+        for name in menu_names:
             try:
-                driver.execute_script("$('a:contains(\"Varusmiesten ruokalista\")')[0].click()")
+                driver.execute_script(f"$('a:contains(\"{name}\")')[0].click()")
             except:
-                driver.implicitly_wait(3)
+                pass
             else:
+                found = True
                 break
-        else:
-            break
+        i += 1
+
+    if not found:
+        raise TimeoutError('Could not find list in time')
 
     driver.implicitly_wait(20)
     driver.execute_script("document.getElementsByClassName('btn btn-default ng-scope')[0].click()")
     driver.implicitly_wait(30)
-    p = os.path.join(os.getcwd(), 'menu_Varusmiesten ruokalista.pdf')
+    path = os.path.join(os.getcwd(), f'menu_{name}.pdf')
     out = os.path.join(os.getcwd(), 'ruokalista.png')
-    args = shlex.split('magick convert -density 300 -quality 1 -depth 8 "{}" "{}"'.format(p, out))
+    args = shlex.split('magick convert -density 300 -quality 1 -depth 8 "{}" "{}"'.format(path, out))
     p = subprocess.call(args)
     driver.close()
+
+    try:
+        os.remove(path)
+    except OSError:
+        pass
 
     import bot
 
     gonabot = bot.GonaBot('!')
-    gonabot.run('NDI1NzIyMzI5NDExMzU0NjI2.DZLkWA.-O9vRVAxQZMquDjq1ul5vW2w714')
+    gonabot.run(config['token'])
