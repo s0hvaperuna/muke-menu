@@ -1,6 +1,7 @@
 import json
 import os
 import shlex
+import traceback
 import subprocess
 
 if not os.path.exists('config.json'):
@@ -55,6 +56,7 @@ if __name__ == '__main__':
                 driver.execute_script(f"$('a:contains(\"{name}\")')[0].click()")
                 print(f'clicking name {name}')
             except:
+                traceback.print_exc()
                 print('Not found')
                 pass
             else:
