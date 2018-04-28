@@ -41,6 +41,10 @@ if __name__ == '__main__':
     chrome_options.add_experimental_option('prefs', prefs)
 
     chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--disable-gpu')
+    binary = config.get('chrome_binary', None)
+    if binary:
+        chrome_options.binary_location = binary
 
     driver = Chrome(config['chromedriver'], options=chrome_options)
     driver.set_window_size(1300, 1800)
@@ -73,8 +77,10 @@ if __name__ == '__main__':
     driver.implicitly_wait(30)
     path = os.path.join(os.getcwd(), f'menu_{name}.pdf')
     out = os.path.join(os.getcwd(), 'ruokalista.png')
+    print(f'Converting {path} to {out}')
     args = shlex.split('magick convert -density 300 -quality 1 -depth 8 "{}" "{}"'.format(path, out))
     p = subprocess.call(args)
+    print('Converted')
     driver.close()
 
     try:
@@ -83,6 +89,6 @@ if __name__ == '__main__':
         pass
 
     import bot
-
+    print('Starting bot')
     gonabot = bot.GonaBot('!')
     gonabot.run(config['token'])
