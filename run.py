@@ -70,6 +70,7 @@ if __name__ == '__main__':
         i += 1
 
     if not found:
+        driver.quit()
         raise TimeoutError('Could not find list in time')
 
     driver.implicitly_wait(20)
@@ -81,7 +82,7 @@ if __name__ == '__main__':
     args = shlex.split('magick convert -density 300 -quality 1 -depth 8 "{}" "{}"'.format(path, out))
     p = subprocess.call(args)
     print('Converted')
-    driver.close()
+    driver.quit()
 
     try:
         os.remove(path)
