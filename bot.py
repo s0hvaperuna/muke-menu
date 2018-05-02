@@ -12,7 +12,7 @@ class GonaBot(Bot):
         if user is not None:
             await user.send(file=file)
             
-        channel = self.get_channel(425730888538783745)
+        channel = self.get_channel(425730888538783747)
         if channel is not None:
             await channel.send(file=file)
             
