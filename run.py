@@ -15,7 +15,7 @@ else:
         config = json.load(f)
 
 
-menu_names = ['Varusmiesten ruokalista', 'Varusmiesruokalista']
+menu_names = ['Varusmiesten ruokalista', 'Varusmiesruokalista', 'Varusmiesateria']
 
 
 # https://github.com/shawnbutton/PythonHeadlessChrome/blob/master/driver_builder.py
