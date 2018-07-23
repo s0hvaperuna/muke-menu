@@ -55,7 +55,7 @@ if __name__ == '__main__':
     i = 0
     driver.execute_script("""jQuery.expr[':'].icontains = function(a, i, m) {
                                 return jQuery(a).text().toLowerCase()
-                                    .indexOf(m[3].toLowerCase()) >= 0;""") # Case insensitive contains
+                                    .indexOf(m[3].toLowerCase()) >= 0;}""") # Case insensitive contains
     while not found and i < 5:
         driver.implicitly_wait(3)
         for name in menu_names:
