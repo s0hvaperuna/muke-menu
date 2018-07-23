@@ -15,7 +15,7 @@ else:
         config = json.load(f)
 
 
-menu_names = ['Varusmiesten ruokalista', 'Varusmiesruokalista', 'Varusmiesateria']
+menu_names = ['varusmiesten ruokalista', 'varusmiesruokalista', 'varusmiesateria', 'varusmieslista']
 
 
 # https://github.com/shawnbutton/PythonHeadlessChrome/blob/master/driver_builder.py
@@ -53,12 +53,15 @@ if __name__ == '__main__':
     driver.get_screenshot_as_png()  # idk this increase the success rate of the script
     found = False
     i = 0
+    driver.execute_script("""jQuery.expr[':'].icontains = function(a, i, m) {
+                                return jQuery(a).text().toLowerCase()
+                                    .indexOf(m[3].toLowerCase()) >= 0;""") # Case insensitive contains
     while not found and i < 5:
         driver.implicitly_wait(3)
         for name in menu_names:
             try:
                 print(f'clicking name {name}')
-                driver.execute_script(f"$('a:contains(\"{name}\")')[0].click()")
+                driver.execute_script(f"$('a:icontains(\"{name}\")')[0].click()")
             except:
                 traceback.print_exc()
                 print('Not found')
