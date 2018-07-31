@@ -82,7 +82,7 @@ if __name__ == '__main__':
     path = os.path.join(os.getcwd(), f'menu_{name}.pdf')
     out = os.path.join(os.getcwd(), 'ruokalista.png')
     print(f'Converting {path} to {out}')
-    args = shlex.split('magick convert -density 300 -quality 1 -depth 8 "{}" "{}"'.format(path, out))
+    args = shlex.split('magick convert -density 300 -quality 1 -depth 8 -trim +repage -append "{}" "{}"'.format(path, out))
     p = subprocess.call(args)
     print('Converted')
     driver.quit()
