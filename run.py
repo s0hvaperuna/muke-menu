@@ -4,6 +4,7 @@ import shlex
 import traceback
 import subprocess
 
+
 if not os.path.exists('config.json'):
     config = {"chromedriver": "chromedriver",
               "token": None}
@@ -48,7 +49,7 @@ if __name__ == '__main__':
 
     driver = Chrome(config['chromedriver'], options=chrome_options)
     driver.set_window_size(1300, 1800)
-    driver.get('http://ruokalistat.leijonacatering.fi/#/05b0c494-f813-e511-892b-78e3b50298fc')
+    driver.get(config['url'])
     enable_download_in_headless_chrome(driver, os.getcwd())
     driver.get_screenshot_as_png()  # idk this increase the success rate of the script
     found = False
@@ -78,8 +79,16 @@ if __name__ == '__main__':
 
     driver.implicitly_wait(20)
     driver.execute_script("document.getElementsByClassName('btn btn-default ng-scope')[0].click()")
-    driver.implicitly_wait(30)
     path = os.path.join(os.getcwd(), f'menu_{name}.pdf')
+
+    for i in range(10):
+        if not os.path.exists(path):
+            if i == 9:
+                print('Download failed')
+                exit(1)
+                
+            driver.implicitly_wait(5)
+
     out = os.path.join(os.getcwd(), 'ruokalista.png')
     print(f'Converting {path} to {out}')
     args = shlex.split('magick convert -density 300 -quality 1 -depth 8 -trim +repage -append "{}" "{}"'.format(path, out))
